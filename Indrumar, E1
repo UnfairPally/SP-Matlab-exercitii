@@ -1,0 +1,8 @@
+a=(0:0.1:2);
+b=linspace(1,1,21);
+b=b(:);
+% b trebuie sa aiba 21 de elemente, atatea cate are a
+a*b;
+% a*b=21, Elementele din a se inmultesc cu elementele corespunzatoroare din b (unu) si se aduna, rezultand practic suma elementelor din a
+b*a;
+% Pt a.*b, b.*a da eroare deoarece dimensiunile matricelor sun diferite
