@@ -1,0 +1,45 @@
+D=15; % - durata semnalului
+P=40; % - perioada semnalului
+N=50; % - nr de coeficienti
+w=2*pi/P; % - pulsatia
+
+t=0:0.5:3.75*P; % - alegem rezolutia temporala 0.5 secunde si afisam 3 perioade
+
+s=1*square(w*t*0.8); % - am folosit functia square pt a genera semnalul dreptunghiular
+% - am ales amplitudinea 1 si durata D=15
+for i=1:length(s)  % - aplicam o monoalternanta pozitiva semnalului
+    if (s(i)<0)
+        s(i)=0;
+    end
+end
+
+figure (1)
+plot(t,s) % - afisez semnalul initial
+xlabel('timp[s]')
+ylabel('amplitudine')
+hold on
+
+y=0:N; % - in y inregistram cei 50 de coeficienti ai semnalului
+
+syms x % - x este o variabila generica folosita la calculul integral
+for k=0:N
+     y(k+1)=1/P*(int((1)*exp(-1i*k*w*x),0,25) + int((0)*exp(-1i*k*w*x),25,50));
+end
+% - calculez cei 50 de coeficienti integrand cele 2 drepte care formeaza semnalul, pe intervalul [0,25] si [25,50]
+figure(2)          % - afisez spectrul semnalului
+stem(0:N,abs(y))
+hold on
+stem(0:-1:-N,abs(y))
+xlabel('numarul armonicii')
+ylabel('modulul amplitudinii')
+
+v=zeros(size(t)); % - punem in vectorul v valorile pentru semnalul reconstruit
+v=v+y(1); 
+for k=1:N
+    v=v + 2*y(k+1)*exp(1i*k*w*t);                                                                
+end
+% - se reconstruieste semnalul cu valorile coeficientilor cu ajutorul formulei pt domeniul timp
+
+figure(1)
+plot(t,v,'.') %afisez semnalul reconstruit pe acelasi grafic cu semnalul initial
+grid
